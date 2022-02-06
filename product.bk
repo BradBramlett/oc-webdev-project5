@@ -1,0 +1,75 @@
+//This file is the JS for adding the cart to the localStorage without the logic of checking each entry
+
+
+
+
+//Global Variables
+const queryString = window.location.search;
+
+const urlParams = new URLSearchParams(queryString);
+
+const id = urlParams.get('id')
+
+let products = []
+
+// let newList = JSON.parse(localCart);
+
+
+//Grabs the API info
+fetch('http://localhost:3000/api/products/' + id)
+.then(data => {
+return data.json();
+})
+
+.then(data => {
+
+// Setting properties for products
+    document.title = data.name;
+    let productImage = document.getElementsByClassName('item__img')[0];
+    productImage.innerHTML += `<img src="${data.imageUrl}" alt="${data.name}">`;
+    let productName = document.getElementById('title');
+    productName.innerHTML += data.name;
+    let productPrice = document.getElementById('price');
+    productPrice.innerHTML += data.price;
+    let productDescription = document.getElementById('description');
+    productDescription.innerHTML += data.description;
+    let colors = document.getElementById('colors');
+    let options = '';
+    let quant = document.getElementById('quantity');
+// Gets the color dropdown  options
+    data.colors.forEach(color => {
+    options += ` <option value="${color}">${color}</option>`        
+    });
+
+    colors.innerHTML += options;
+
+    let colorSel = document.getElementById('colors');
+    let btn = document.getElementById('addToCart');
+
+//Adds localStorage to products array.
+let localCart = localStorage.getItem('cart');
+if(localCart == null) {
+    console.log('Cart is Empty')
+} else {
+    localCart = JSON.parse(localCart);
+    console.log('Cart Items:')
+    console.log(localCart);
+    localCart.forEach (item => {
+    products.push(item);
+    });
+};
+
+//Appends item to the 'products' array, then writes the array to localStorage
+
+    btn.addEventListener("click", function() {
+        if(localCart == null) {
+            products.push({id:data._id, qty:quant.value, col:colorSel.value});
+        } else {
+            let indx = localCart.findIndex();
+        };
+
+        localStorage.setItem('cart', JSON.stringify(products));
+    });
+});
+
+
