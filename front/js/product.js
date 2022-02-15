@@ -7,7 +7,7 @@ const id = urlParams.get('id')
 
 let products = []
 
-let x =1;
+
 
 
 // let newList = JSON.parse(localCart);
@@ -59,8 +59,9 @@ if(localCart == null) {
 
     btn.addEventListener("click", () => {
         let entry = {id:data._id, qty:parseInt(quant.value), col:colorSel.value};
-        let index1 = products.findIndex(object => object.id == entry.id);
-        let index2 = products.findIndex(object => object.col == entry.col);
+        let idIndex = products.findIndex(object => object.id == entry.id);
+        let colorIndex = products.findIndex(object => object.col == entry.col);
+        
         products.forEach(item => {
             item.qty = parseInt(item.qty);
         });
@@ -69,15 +70,17 @@ if(localCart == null) {
             
         } else {
             //If ID is not found, add in entry
-            if( index1 == -1){
+            if( idIndex == -1){
                 products.push(entry);
+                alert("Item added to cart");
                 //else continue checking
-            } else if (index1 != -1) {
-                if (index2 !=-1){
-                    products[index2].qty += entry.qty;
+            } else if (idIndex != -1) {
+                if (colorIndex !=-1){
+                    products[colorIndex].qty += entry.qty;
                 }
                 else {
                     products.push(entry);
+                    alert("Item added to cart");
                 };
             };
             };
