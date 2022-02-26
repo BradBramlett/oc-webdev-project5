@@ -58,7 +58,8 @@ if(localCart == null) {
 //Appends item to the 'products' array, then writes the array to localStorage
 
     btn.addEventListener("click", () => {
-        let entry = {id:data._id, qty:parseInt(quant.value), col:colorSel.value};
+        let cost = parseInt(quant.value*data.price)
+        let entry = {id:data._id, qty:parseInt(quant.value), col:colorSel.value, price:parseInt(data.price)};
         let idIndex = products.findIndex(object => object.id == entry.id);
         let colorIndex = products.findIndex(object => object.col == entry.col);
         
